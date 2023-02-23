@@ -1,5 +1,4 @@
 package step.definitions;
-
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
@@ -10,8 +9,8 @@ import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
-
 import java.net.URI;
+import org.hamcrest.Matchers;
 
 public class MyStepDefinition {
     private Scenario scenario;
@@ -46,7 +45,6 @@ public class MyStepDefinition {
         System.out.println(response.prettyPrint());
         Assert.assertEquals(bodyAsString.contains(name), name);
 
-
     }
 
     @Given("Get the Author details status code")
@@ -66,25 +64,22 @@ public class MyStepDefinition {
 
     }
 
-    @Given("Get the email {string}")
-    public void getTheCityName(String emailID) {
+    @Given("Get the email {string} and {string}")
+    public void getTheCityName(String author, String url) {
 
-        RestAssured.baseURI = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url");
+        RestAssured.baseURI = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url3");
         RequestSpecification httpRequest = RestAssured.given();
-        Response response = httpRequest.get("/users?page=2");
+        Response response = httpRequest.get(url);
         JsonPath jsonPathEvaluator =response.jsonPath();
-        String email = jsonPathEvaluator.get("email");
+        String authorname = jsonPathEvaluator.get("author");
 
-        System.out.println(" response is"+ email);
-       Assert.assertEquals(email,emailID,emailID);
+        System.out.println(" response is"+ authorname);
+        Assert.assertEquals(authorname,author,authorname);
         System.out.println(response.prettyPrint());
-
     }
 
     @Then("Verify the city name")
     public void verifyTheCityName() {
-
-
 
     }
 }

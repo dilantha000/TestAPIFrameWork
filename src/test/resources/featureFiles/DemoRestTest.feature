@@ -21,8 +21,8 @@ Feature: Dummy Rest API Functionality Scenarios
 
 
   Scenario Outline: Verify the city name
-    Given Get the email "<emailId>"
+    Given Get the email "<author>" and "<url>"
     Then Verify the city name
     Examples:
-      | emailId                  |
-      | michael.lawson@reqres.in |
+      | author   | url      |
+      | typicodee | posts/1 |
