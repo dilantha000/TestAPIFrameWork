@@ -24,7 +24,6 @@ public class ReadDataFromPropertiesFile {
 
             //get the property value and print it out
 
-
         }
         catch (IOException ex) {
             ex.printStackTrace();
@@ -32,6 +31,5 @@ public class ReadDataFromPropertiesFile {
         }
 
     }
-
 
 }

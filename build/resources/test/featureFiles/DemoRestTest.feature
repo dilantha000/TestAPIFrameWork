@@ -21,8 +21,29 @@ Feature: Dummy Rest API Functionality Scenarios
 
 
   Scenario Outline: Verify the city name
-    Given Get the email "<author>" and "<url>"
+    Given Get the email "<author>" and "<url>" and "<title>"
     Then Verify the city name
     Examples:
-      | author   | url      |
-      | typicodee | posts/1 |
+      | author   | url     | title       |
+      | typicode | posts/1 | json-server |
+
+  Scenario Outline: Add new author details
+    Given Update new "<author>" details
+    Then Verify the city name
+    Examples:
+      | author |
+      | james  |
+
+#  Scenario : Test maps
+#    When The Valid Instruction is updated with
+#      | author   | url     | title       |
+#      | typicode | posts/1 | json-server |
+#
+#    Then Verify the city name
+
+  Scenario Outline: Update city details
+    Given Update the email "<username>" and "<password>"
+    Then Verify the city name
+    Examples:
+      | username | password |
+      | typicode | posts/1  |
