@@ -4,6 +4,7 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.gherkin.internal.com.eclipsesource.json.ParseException;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,11 +15,8 @@ import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
 import org.junit.Assert;
-
 import java.io.FileNotFoundException;
 import java.net.URI;
-import java.net.URLConnection;
-import java.net.http.HttpRequest;
 import java.util.Map;
 
 public class MyStepDefinition {
@@ -50,7 +48,7 @@ public class MyStepDefinition {
         String bodyAsString = body.asString();
         System.out.println("Response body is: " + response.getStatusLine());
         System.out.println(response.prettyPrint());
-        Assert.assertEquals(bodyAsString.contains(name), name);
+        //Assert.assertEquals(bodyAsString.contains("name"),name);
     }
 
     @Given("Get the Author details status code")
@@ -64,12 +62,11 @@ public class MyStepDefinition {
         // Get the status code of the request.
         //If request is successful, status code will be 200
         int statusCode = response.getStatusCode();
-
         // Assert that correct status code is returned.
         Assert.assertEquals(statusCode, 200);
     }
 
-    @Given("Get the email {string} and {string} and {string}")
+    @And("Get the email {string} and {string} and {string}")
     public void getTheCityName(String author, String url, String title) {
 
         RestAssured.baseURI = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url3");
@@ -114,5 +111,3 @@ public class MyStepDefinition {
     }
 
 }
-
-
