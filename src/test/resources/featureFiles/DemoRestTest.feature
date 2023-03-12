@@ -5,8 +5,8 @@ Feature: Dummy Rest API Functionality Scenarios
     Then Response Code "<responseMessage>" is validated
 
     Examples:
-      | url       | responseMessage |
-      | /users/23 | 404             |
+      | url    | responseMessage |
+      | /posts | 200             |
 
 
   Scenario Outline: verify name display
@@ -14,11 +14,12 @@ Feature: Dummy Rest API Functionality Scenarios
     Then Response should display "<name>"
 
     Examples:
-      | url          | name    |
-      | users?page=2 | Lindsay |
+      | url           | name    |
+      | /users?page=2 | Lindsay |
 
 
   Scenario Outline: Verify the city name
+    Given Get Call to "<url>"
     And Get the email "<author>" and "<url>" and "<title>"
     Then Verify the city name
     Examples:

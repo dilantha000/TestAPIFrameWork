@@ -10,7 +10,6 @@ public class ReadDataFromPropertiesFile {
 
         try (InputStream input = ReadDataFromPropertiesFile.class.getClassLoader().getResourceAsStream("config.properties"))
         {
-
             Properties prop = new Properties();
 
             if (input == null) {
