@@ -4,6 +4,7 @@ import apiEngine.model.requests.AuthorizationRequest;
 import apiEngine.model.responses.ResponsePojo;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.gherkin.internal.com.eclipsesource.json.ParseException;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
@@ -15,6 +16,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.junit.Assert;
 
@@ -22,16 +24,23 @@ import javax.print.attribute.standard.PrinterName;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 
+import org.apache.log4j.Logger;
+
+
 public class MyStepDefinition {
+
+    private static final Logger LOGGER = Logger.getLogger(MyStepDefinition.class);
     private Scenario scenario;
     private Response response;
-
-    //private final String BASE_URL = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url");
 
     private static final String USER_ID = "9b5f49ab-eea9-45f4-9d66-bcf56a531b85";
     private static String finalUrl;
@@ -39,10 +48,27 @@ public class MyStepDefinition {
     private static String jsonString;
     private static String bookId;
 
+    public MyStepDefinition() throws SQLException {
+    }
+
     @Before
     public void before(Scenario scenarioVal) {
         this.scenario = scenarioVal;
     }
+
+    @After("@deleteAllUsers")
+    public void deleteAllUsers() {
+        deleteTheAllUsers();
+    }
+
+    Connection con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306:/sql12606376");
+   // private static final Logger LOGGER = Logger.getLogger(Log4J.class);
+    Statement stmt=con.createStatement();
+    String s ="insert into Employees values(6775,'Passed','Dilantha',)";
+
+    //stmt.executeQuery(s);
+    //con.close();
+
 
     @Given("Get Call to {string}")
     public void get_call_to_url(String url) throws Exception {
@@ -222,6 +248,7 @@ public class MyStepDefinition {
 
     @Given("Add the user details {string} {string} {string}")
     public void addTheUserDetails(String code, String message, String name) {
+        LOGGER.info("Initializing ExampleLog4j application");
         RestAssured.baseURI = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url9");
         AuthorizationRequest authRequest = new AuthorizationRequest(code, message, name);
         response = TestUtil.createHeader(authRequest);
@@ -234,7 +261,6 @@ public class MyStepDefinition {
         String newUrl = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url4");
         finalUrl = newUrl+authorId;
         RestAssured.baseURI = finalUrl;
-        System.out.println(finalUrl);
     }
 
     @Then("Delete the all users")
@@ -248,6 +274,17 @@ public class MyStepDefinition {
         Assert.assertEquals(res.getStatusCode(), 204, 204);
     }
 
+    @Then("update the user message {string}")
+    public void updateTheUserMessage(String updated_message) {
+        RestAssured.baseURI = finalUrl;
+        RequestSpecification httpRequest = RestAssured.given().log().body();
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("message", updated_message);
+        httpRequest.header("Content-Type", "application/json");
+        httpRequest.body(requestParams.toString());
+        Response response = httpRequest.put();
+    }
+
     @Given("Add the user name")
     public void addTheUserName() {
         AuthorizationRequest authRequest = new AuthorizationRequest(ReadDataFromPropertiesFile.readDataFromPropertiesFile("username"),
@@ -259,6 +296,7 @@ public class MyStepDefinition {
 
     @Then("Verify the user name")
     public void verifyTheUserName() {
+
         TestUtil.printName();
     }
 
@@ -294,6 +332,5 @@ public class MyStepDefinition {
         String authorName = jsonPathEvaluator.get("name");
         Assert.assertEquals(authorName, name, authorName);
     }
-
 
 }
