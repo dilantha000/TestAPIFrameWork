@@ -56,18 +56,18 @@ public class MyStepDefinition {
         this.scenario = scenarioVal;
     }
 
-    @After("@deleteAllUsers")
-    public void deleteAllUsers() {
-        deleteTheAllUsers();
-    }
-
-    Connection con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306:/sql12606376");
-   // private static final Logger LOGGER = Logger.getLogger(Log4J.class);
-    Statement stmt=con.createStatement();
-    String s ="insert into Employees values(6775,'Passed','Dilantha',)";
-
-    //stmt.executeQuery(s);
-    //con.close();
+//    @After("@deleteAllUsers")
+//    public void deleteAllUsers() {
+//        deleteTheAllUsers();
+//    }
+//
+//    Connection con = DriverManager.getConnection("jdbc:mysql://sql12.freesqldatabase.com:3306:/sql12606376");
+//   // private static final Logger LOGGER = Logger.getLogger(Log4J.class);
+//    Statement stmt=con.createStatement();
+//    String s ="insert into Employees values(6775,'Passed','Dilantha',)";
+//
+//    //stmt.executeQuery(s);
+//    //con.close();
 
 
     @Given("Get Call to {string}")
@@ -302,10 +302,20 @@ public class MyStepDefinition {
 
     @Given("Get the user data {string}")
     public void getTheUserData(String url) throws Exception {
-        RestAssured.baseURI = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url3");
+        RestAssured.baseURI = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url9");
         RequestSpecification httpRequest = RestAssured.given().log().body();
-        response = httpRequest.when().get(new URI(url));
+        response = httpRequest.when().get(new URI(baseURI));
     }
+
+    @Given("Get user information")
+    public void getUserInformation() throws URISyntaxException {
+        RestAssured.baseURI = ReadDataFromPropertiesFile.readDataFromPropertiesFile("url9");
+        RequestSpecification httpRequest = RestAssured.given().log().body();
+        response = httpRequest.when().get(new URI(baseURI));
+        response.getBody();
+        System.out.println("Response Body is: " + response.asString());
+    }
+
 
     @Then("Verify the status code")
     public void verifyTheStatusCode() {

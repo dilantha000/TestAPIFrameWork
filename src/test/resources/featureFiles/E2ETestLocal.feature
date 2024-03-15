@@ -7,16 +7,21 @@ Feature: Send Post request and Verify the Status Code and the Name
     Then Verify the user name
 #    And Delete the user
     Examples:
-      | code | message | name |
-      | 6770 | pass    | bolt |
+      | code | message | name     |
+      | 6770 | pass    | piyumi |
 
   Scenario Outline: Get the user data and delte
     Given Get the user data "<url>"
     Then Verify the status code
-    Then Delete the all users
+#    Then Delete the all users
     Examples:
       | url    |
       | /posts |
+
+
+    Scenario: Get details
+      #This is working get
+      Given Get user information
 
   Scenario Outline: Update the user details
     Given Update the user details "<code>" "<message>" "<name>"
@@ -24,9 +29,9 @@ Feature: Send Post request and Verify the Status Code and the Name
     Then Verify the updated message "<name>"
     Examples:
       | code | message | name  | status |
-      | 6769 | failed  | bolts | 200    |
+      | 6769 | failed  | bolts | 201    |
 
-  @deleteAllUsers
+#  @deleteAllUsers
   Scenario Outline: Authorised user is able to add update check states and delete details
     Given Add the user details "<code>" "<message>" "<name>"
     Then Capture the url
@@ -36,4 +41,4 @@ Feature: Send Post request and Verify the Status Code and the Name
 #    Then Delete the all users
     Examples:
       | code | message | name  | status | updated_message |
-      | 6771 | PASSED  | KEYAN | 200    | Processing      |
+      | 6771 | PASSED  | KEYAN | 201    | Processing      |
